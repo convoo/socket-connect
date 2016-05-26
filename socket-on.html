@@ -1,0 +1,48 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="socket-on">
+  <template>
+  </template>
+
+  <script>
+    /**
+     * The `socket-on` element builds off of a connection that was set up using `<socket-connect>`.
+     * 
+     * It will handle any event that occurs with the provided name and return the data sent via 
+     * the data attribute
+     *  
+     * Example:
+     * 
+     *     <socket-on name="demo" data="{{receivedata}}"></socket-on>
+     * 
+     */
+    Polymer({
+
+      is: 'socket-on',
+
+      properties: {
+        /**
+         * `name` is the name of the event to handle
+         */
+        name: String,
+        /**
+         * `data` represents the provided data with the socket event
+         */
+        data: {
+          type: Object,
+          notify: true,
+          reflectToAttribute: true
+        }
+      },
+      /** 
+       * Sets up the socket.on event handler
+       */
+      _setup: function(socket, token){
+        socket.on(this.name, function(data){
+          this.data = data;
+        }.bind(this));
+      }
+
+    });
+  </script>
+</dom-module>

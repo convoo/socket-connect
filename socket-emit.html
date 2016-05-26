@@ -1,0 +1,63 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="socket-emit">
+  <template>
+  </template>
+
+  <script>
+    /**
+     * The `socket-emit` element builds off of a connection that was set up using `<socket-connect>`.
+     * 
+     * It will emit the data provided with an event named after the provided name on the parent socket.
+     * It will also emit the data anytime it changes.
+     * 
+     * Example:
+     * 
+     *     <socket-emit name="demo" data="[[emittedData]]"></socket-emit>
+     * 
+     */
+    Polymer({
+
+      is: 'socket-emit',
+
+      properties: {
+        /**
+         * `name` is the name of the event to handle
+         */
+        name: String,
+        /**
+         * `data` represents the sent data with the socket event
+         */
+        data: {
+          type: Object,
+          notify: true,
+          reflectToAttribute: true,
+          observer: "_dataChanged"
+        }
+      },
+      /**
+       * Emits the event and sets up future values to be able to interact with sockets
+       */
+      _setup: function(socket, token){
+        // Add the token to data if specified
+        // Do not overwrite already defined data.token
+        if( token != null && typeof(this.data) != undefined && typeof(this.data.token) == undefined){
+          this.data.token = token;
+          this.token = token;
+        }
+        this.socket = socket;
+        socket.emit(this.name, this.data);
+      },
+      /**
+       * Handles data changes to emit a new socket event
+       */
+      _dataChanged: function(newVal, oldVal){
+        if( this.token != null && typeof(newVal) != undefined && typeof(newVal.token) == undefined){
+          newVal.token = token;
+        }
+        this.socket.emit(this.name, newVal);
+      }
+
+    });
+  </script>
+</dom-module>

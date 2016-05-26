@@ -1,0 +1,61 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="socket-connect">
+
+  <template>
+    <script src$="{{socketIp}}/socket.io/socket.io.js" 
+      on-load="_socketSetup"
+      on-error="_onScriptError"></script>
+    <content></content>
+  </template>
+
+  <script>
+    /**
+     * The `socket-connect` element registers a connection with a socket.io server.
+     * 
+     * It also connects with children elements of types `socket-emit` and `socket-on` in order to 
+     * emit data with events as well as receive data from emitted events from the server.
+     * 
+     * Example:
+     * 
+     *     <socket-connect socket-ip="http://localhost:8000">
+     *       <socket-on name="demo" data="{{onData}}"></socket-on>
+     *       <socket-emit name="demo" data="[[emittedData]]"></socket-emit>
+     *     </socket-connect>
+     * 
+     * @demo demo/index.html
+     */
+    Polymer({
+
+      is: 'socket-connect',
+
+      properties: {
+        /**
+         * `socketIp` provides the IP or domain address to connect to via io.connect("socketIp")
+         */
+        socketIp: String,
+        /**
+         * `token` is an optional attribute specifying a token passed with every socket event
+         */
+        token: String
+      },
+      
+      _socketSetup: function(){
+        this.socket = io.connect(this.socketIp);
+        var children = Polymer.dom(this).children;
+        
+        for (var i = 0; i < children.length; i++) {
+          if (typeof children[i]._setup === 'function') {
+            children[i]._setup(this.socket, this.token);
+          }
+        }
+      },
+      
+      _onScriptError: function(err){
+        console.log(err);
+      },
+      
+
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <title>socket-connect demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+    <link rel="import" href="../socket-connect.html">
+    <link rel="import" href="../socket-emit.html">
+    <link rel="import" href="../socket-on.html">
+
+    <style is="custom-style" include="demo-pages-shared-styles">
+    </style>
+  </head>
+  <body unresolved>
+
+    <dom-module id="demo">
+      <template is="dom-bind" id="demo-template">
+        <div class="vertical-section-container centered">
+          <h3>Basic socket-connect Demo</h3>
+          
+          <p>
+            This demo requires a simple socket server to be setup. Unfortunately, this means the demo won't be visible online.
+          </p>
+          <p>
+            In order to view the demo properly, you must load the component locally, run <code>npm install</code> from the demo directory and 
+            then <code>node index.js</code> in order to run the server. This should set this demo up to work properly.
+          </p>
+          
+          <socket-connect socket-ip="http://localhost:8000">
+            <socket-on name="demo" data="{{onData}}"></socket-on>
+            <socket-emit name="demo" data="[[emittedData]]"></socket-emit>
+          </socket-connect>
+          
+          <br><br><label>Enter the data to emit:</label><input type="text" value="{{emittedData::input}}">
+          onData = {{onData.data}}<br>
+          emittedData = {{emittedData}}
+          
+        </div>
+      </template>
+    </dom-module>
+  </body>
+</html>

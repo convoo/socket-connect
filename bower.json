@@ -1,5 +1,6 @@
 {
   "name": "socket-connect",
+  "version": "0.0.1",
   "description": "Connect to socket io",
   "main": "socket-connect.html",
   "dependencies": {
